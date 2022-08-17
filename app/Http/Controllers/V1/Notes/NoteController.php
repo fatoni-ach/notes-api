@@ -81,4 +81,23 @@ class NoteController extends Controller
         ], 200);
 
     }
+
+    public function destroy(Request $request, $slug)
+    {
+        $data = Note::where('slug', $slug)->first();
+
+        if(! $data) {
+            return response()->json([
+                'status'    => 'not found',
+                'data'      => null
+            ], 404);
+        }
+
+        $data->delete();
+
+        return response()->json([
+            'status'    => 'success delete',
+            'data'  => null,
+        ], 200);
+    }
 }

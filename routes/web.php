@@ -27,5 +27,6 @@ $router->group(['prefix' => 'v1',
         $router->post('/create', 'NoteController@store');
         $router->get('/{slug}', 'NoteController@show');
         $router->put('/{slug}', 'NoteController@update');
+        $router->delete('/{slug}', 'NoteController@destroy');
     });
 });
