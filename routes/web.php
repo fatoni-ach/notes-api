@@ -24,7 +24,8 @@ $router->group(['prefix' => 'v1',
                     'namespace' => 'Notes'], function () use ($router) 
     {
         $router->get('/', 'NoteController@index');
-        $router->get('/{slug}', 'NoteController@show');
         $router->post('/create', 'NoteController@store');
+        $router->get('/{slug}', 'NoteController@show');
+        $router->put('/{slug}', 'NoteController@update');
     });
 });

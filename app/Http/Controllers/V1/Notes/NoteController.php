@@ -47,7 +47,7 @@ class NoteController extends Controller
         $data = Note::create($validated);
 
         $code = 200;
-        $status = 'success';
+        $status = 'success create';
         if (! $data) {
             $code = 500;
             $status = 'failed';
@@ -59,5 +59,26 @@ class NoteController extends Controller
             'status'   => $status,
             'data'     => $data,
         ], $code);
+    }
+
+    public function update(NoteRequest $request, $slug)
+    {
+        $validated = $request->validated();
+        $data = Note::where('slug', $slug)->first();
+
+        if (! $data){
+            return response()->json([
+                'status'    => 'not found',
+                'data'      => null,
+            ], 404);
+        }
+
+        $data->update($validated);
+
+        return response()->json([
+            'status'    => 'success update',
+            'data'      => $data
+        ], 200);
+
     }
 }
