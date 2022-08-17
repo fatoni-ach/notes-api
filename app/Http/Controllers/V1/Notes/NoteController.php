@@ -20,6 +20,26 @@ class NoteController extends Controller
         );
     }
 
+
+    public function show(Request $request, $slug)
+    {
+        $data = Note::select('id', 'title', 'slug', 'body', 'created_by', 'created_at')
+                    ->where('slug', $slug)->first();
+
+        $code = 200;
+        $status = 'success';
+
+        if(! $data){
+            $code = 404;
+            $status = 'not found';
+        }
+
+        return response()->json([
+            'status'    => $status,
+            'data'  => $data,
+        ], $code);
+    }
+
     public function store(NoteRequest $request)
     {
         $validated = $request->validated();
