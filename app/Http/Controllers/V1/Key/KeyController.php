@@ -19,7 +19,7 @@ class KeyController extends Controller
             'name'  => $validated['name'],
             'email' => $validated['email'],
             'password'  => Hash::make($validated['password']),
-            'secret_key' => Str::random(20),
+            'secret_key' => Str::random(50),
         ]);
 
         return response()->json([
