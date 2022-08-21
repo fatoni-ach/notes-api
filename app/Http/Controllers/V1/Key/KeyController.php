@@ -25,4 +25,11 @@ class KeyController extends Controller
             'status'    => 'success'
         ], 200);
     }
+
+    public function getKey()
+    {
+        return response()->json([
+            'Get Key Page'
+        ]);
+    }
 }

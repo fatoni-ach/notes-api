@@ -34,6 +34,7 @@ $router->group(['prefix' => 'v1',
                     'namespace' => 'Key',], function () use ($router) 
     {
         $router->post('/register', 'KeyController@registerKey');
+        $router->post('/get-key', 'KeyController@getKey');
     });
 
 });
