@@ -29,4 +29,11 @@ $router->group(['prefix' => 'v1',
         $router->put('/{slug}', 'NoteController@update');
         $router->delete('/{slug}', 'NoteController@destroy');
     });
+
+    $router->group(['prefix' => 'key',
+                    'namespace' => 'Key',], function () use ($router) 
+    {
+        $router->post('/register', 'KeyController@registerKey');
+    });
+
 });
