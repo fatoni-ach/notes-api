@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\V1\Key;
 
+use App\Helper\Respond;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GetKeyRequest;
 use App\Http\Requests\KeyRequest;
@@ -22,9 +23,7 @@ class KeyController extends Controller
             'secret_key' => Str::random(50),
         ]);
 
-        return response()->json([
-            'status'    => 'success'
-        ], 200);
+        return Respond::success('User success register key');
     }
 
     public function getKey(GetKeyRequest $request)
@@ -37,14 +36,13 @@ class KeyController extends Controller
 
         if(Hash::check($validated['password'], $user->password)) {
 
-            return response()->json([
-                'status'    => 'success',
-                'secret_key'    => $user->secret_key
-            ]);
+            $data = [
+                'secret_key' => $user->secret_key
+            ];
+
+            return Respond::success('Success get Secret Key', $data);
         }
-        
-        return response()->json([
-            'status' => 'not_found'
-        ], 404);
+
+        return Respond::failed(404, 'not_found', 'User Not Found / email and password doesnt match');
     }
 }
