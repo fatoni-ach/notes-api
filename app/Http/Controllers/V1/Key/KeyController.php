@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\V1\Key;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\GetKeyRequest;
 use App\Http\Requests\KeyRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -26,10 +27,24 @@ class KeyController extends Controller
         ], 200);
     }
 
-    public function getKey()
+    public function getKey(GetKeyRequest $request)
     {
+        $validated = $request->validated();
+
+        $user = User::select('secret_key', 'password')
+                        ->where('email', $validated['email'])
+                        ->first();
+
+        if(Hash::check($validated['password'], $user->password)) {
+
+            return response()->json([
+                'status'    => 'success',
+                'secret_key'    => $user->secret_key
+            ]);
+        }
+        
         return response()->json([
-            'Get Key Page'
-        ]);
+            'status' => 'not_found'
+        ], 404);
     }
 }
