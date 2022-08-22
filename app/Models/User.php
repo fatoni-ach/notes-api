@@ -36,4 +36,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         return $this->hasMany(Note::class);
     }
+
+    public static function findByKey($key)
+    {
+        return self::where('secret_key', $key)->first();
+    }
 }
