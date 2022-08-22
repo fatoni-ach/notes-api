@@ -23,11 +23,11 @@ $router->group(['prefix' => 'v1',
     $router->group(['prefix' => 'notes',
                     'namespace' => 'Notes'], function () use ($router) 
     {
-        $router->get('/', 'NoteController@index');
-        $router->post('/create', 'NoteController@store');
-        $router->get('/{slug}', 'NoteController@show');
-        $router->put('/{slug}', 'NoteController@update');
-        $router->delete('/{slug}', 'NoteController@destroy');
+        $router->get('/', ['middleware' => 'x-key', 'uses' => 'NoteController@index']);
+        $router->post('/create', ['middleware' => 'x-key', 'uses' =>'NoteController@store']);
+        $router->get('/{slug}', ['middleware' => 'x-key', 'uses' => 'NoteController@show']);
+        $router->put('/{slug}', ['middleware' => 'x-key', 'uses' => 'NoteController@update']);
+        $router->delete('/{slug}', ['middleware' => 'x-key', 'uses' => 'NoteController@destroy']);
     });
 
     $router->group(['prefix' => 'key',

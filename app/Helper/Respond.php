@@ -16,7 +16,7 @@ class Respond {
     public static function failed($statusCode,  $status = 'failed', $message = 'failed')
     {
         return response()->json([
-            'status'    => 'failed',
+            'status'    => $status,
             'message'   => $message
         ], $statusCode);
     }
