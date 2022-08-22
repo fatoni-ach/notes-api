@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\V1\Notes;
 
+use App\Helper\Respond;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\NoteRequest;
@@ -12,12 +13,8 @@ class NoteController extends Controller
     public function index()
     {
         $data = Note::select('title', 'slug')->orderBy('id', 'desc')->get();
-        return response()->json(
-            [
-                'status'    =>  'success',
-                'data'      => $data
-            ], 200
-        );
+
+        return Respond::success('success', $data);
     }
 
 
@@ -26,18 +23,12 @@ class NoteController extends Controller
         $data = Note::select('id', 'title', 'slug', 'body', 'created_by', 'created_at')
                     ->where('slug', $slug)->first();
 
-        $code = 200;
-        $status = 'success';
-
         if(! $data){
-            $code = 404;
-            $status = 'not found';
+
+            return Respond::failed(404, 'not_found', 'not_found');
         }
 
-        return response()->json([
-            'status'    => $status,
-            'data'  => $data,
-        ], $code);
+        return Respond::success('success', $data);
     }
 
     public function store(NoteRequest $request)
@@ -46,19 +37,12 @@ class NoteController extends Controller
         
         $data = Note::create($validated);
 
-        $code = 200;
-        $status = 'success create';
         if (! $data) {
-            $code = 500;
-            $status = 'failed';
 
-            $data = null;
+            return Respond::failed(500, 'failed', 'Failed create Note');
         }
 
-        return response()->json([
-            'status'   => $status,
-            'data'     => $data,
-        ], $code);
+        return Respond::success('success create Note', $data);
     }
 
     public function update(NoteRequest $request, $slug)
@@ -67,18 +51,13 @@ class NoteController extends Controller
         $data = Note::where('slug', $slug)->first();
 
         if (! $data){
-            return response()->json([
-                'status'    => 'not found',
-                'data'      => null,
-            ], 404);
+
+            return Respond::failed(404, 'failed', 'not_found');
         }
 
         $data->update($validated);
 
-        return response()->json([
-            'status'    => 'success update',
-            'data'      => $data
-        ], 200);
+        return Respond::success('success update Note', $data);
 
     }
 
@@ -87,17 +66,12 @@ class NoteController extends Controller
         $data = Note::where('slug', $slug)->first();
 
         if(! $data) {
-            return response()->json([
-                'status'    => 'not found',
-                'data'      => null
-            ], 404);
+
+            return Respond::failed(404, 'failed', 'not_found');
         }
 
         $data->delete();
 
-        return response()->json([
-            'status'    => 'success delete',
-            'data'  => null,
-        ], 200);
+        return Respond::success('success delete Note');
     }
 }
